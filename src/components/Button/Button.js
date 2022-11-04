@@ -22,6 +22,7 @@ function Button({
     className,
     onClick,
     children,
+    w100,
 
     ...passProps
 }) {
@@ -46,7 +47,7 @@ function Button({
         small,
         medium,
         large,
-
+        'w-100': w100,
         text,
         disabled,
 

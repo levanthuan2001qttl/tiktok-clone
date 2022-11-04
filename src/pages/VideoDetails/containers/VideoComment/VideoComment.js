@@ -1,25 +1,42 @@
 import { useRef, useState, useEffect } from 'react';
-import { useElementOnScreen } from '~/hooks';
+import styles from './VideoComment.module.scss';
 import classNames from 'classnames/bind';
-import styles from './VideoContainer.module.scss';
 import { Slider } from 'antd';
-import { VolumeIcon, VolumeMutedIcon } from './../Icons/Icons';
-import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
+
+import { VolumeIcon, VolumeMutedIcon } from '~/components/Icons';
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { secondToMinute } from '~/helps/secondToMinute';
 
 const cx = classNames.bind(styles);
 
-function Video({ data }) {
-    const [playing, setPlaying] = useState(false);
+function VideoComment({ data }) {
+    const [playing, setPlaying] = useState(true);
     const [isHover, setIsHover] = useState(false);
+    const [songDuration, setSongDuration] = useState(data.meta.playtime_seconds);
+    const [songCurrentTime, setSongCurrentTime] = useState(0);
+
     const videoRef = useRef(null);
-    const options = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.3,
-    };
-    const isVisible = useElementOnScreen(options, videoRef);
+
+    useEffect(() => {
+        videoRef?.current?.play();
+    }, [data]);
+
+    useEffect(() => {
+        const handle = (e) => {
+            if (e.code === 'Space') {
+                if (playing) {
+                    videoRef?.current?.pause();
+                    setPlaying(!playing);
+                } else {
+                    videoRef?.current?.play();
+                    setPlaying(!playing);
+                }
+            }
+        };
+        document.addEventListener('keydown', handle);
+        return () => document.removeEventListener('keydown', handle);
+    }, [playing]);
 
     const onVideoClick = () => {
         if (playing) {
@@ -30,21 +47,6 @@ function Video({ data }) {
             setPlaying(!playing);
         }
     };
-
-    useEffect(() => {
-        if (isVisible) {
-            if (!playing) {
-                videoRef?.current?.play();
-                setPlaying(!playing);
-            }
-        } else {
-            if (playing) {
-                videoRef?.current?.pause();
-                setPlaying(!playing);
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isVisible]);
 
     const [volume, setVolume] = useState(100);
 
@@ -58,17 +60,14 @@ function Video({ data }) {
         videoRef.current.volume = value / 100;
     };
 
-    const [songDuration, setSongDuration] = useState(data.meta.playtime_seconds);
-    const [songCurrentTime, setSongCurrentTime] = useState(0);
-
     const onTimeUpdate = () => {
         setSongCurrentTime(videoRef.current.currentTime);
     };
     const handleChangeCurrentTime = (value) => {
-        console.log({ value });
         let currentTime = (songDuration * value) / 100;
         videoRef.current.currentTime = currentTime;
     };
+
     return (
         <div className={cx('feed-video')} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
             {
@@ -81,13 +80,9 @@ function Video({ data }) {
                     onTimeUpdate={onTimeUpdate}
                 />
             }
-            {isHover && (
+            {
                 <div>
-                    {playing ? (
-                        <button className={cx('feed-video-button-play')} onClick={onVideoClick}>
-                            <FontAwesomeIcon className={cx('feed-video-button-play-icon')} icon={faPause} />
-                        </button>
-                    ) : (
+                    {!playing && (
                         <button className={cx('feed-video-button-play')} onClick={onVideoClick}>
                             <FontAwesomeIcon className={cx('feed-video-button-play-icon')} icon={faPlay} />
                         </button>
@@ -122,7 +117,7 @@ function Video({ data }) {
                         </div>
                     </div>
                 </div>
-            )}
+            }
             {Math.floor(songDuration) > 30 && isHover && (
                 <div className={cx('video-player-slider')}>
                     <div className={cx('video-player-slider-duration')}>
@@ -142,4 +137,4 @@ function Video({ data }) {
     );
 }
 
-export default Video;
+export default VideoComment;

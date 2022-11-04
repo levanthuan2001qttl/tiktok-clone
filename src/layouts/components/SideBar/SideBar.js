@@ -14,6 +14,9 @@ import {
 import SuggestAccount from '~/components/SuggestAccount';
 import { userService } from '~/services';
 import RequireLogin from './RequireLogin/RequireLogin';
+import { useSelector } from 'react-redux';
+import { getCurrentUserSelector } from '~/modules/authenticationSlice/authSelector';
+import GoToTop from '~/components/GoToTop/GoToTop';
 
 const cx = classNames.bind(styles);
 
@@ -35,7 +38,7 @@ function SideBar() {
         };
         fetchApi();
     }, []);
-    const currentUser = localStorage.getItem('currentUser');
+    const getCurrentUser = useSelector(getCurrentUserSelector);
 
     return (
         <aside className={cx('wrapper')}>
@@ -54,8 +57,9 @@ function SideBar() {
                 />
                 <MenuItem title="Live" to={config.routes.live} icon={<LiveIcon />} activeIcon={<LiveActiveIcon />} />
             </Menu>
-            {!currentUser && <RequireLogin title="Đăng nhập để follow các tác giả, thích video và xem bình luận." />}
+            {!getCurrentUser && <RequireLogin title="Đăng nhập để follow các tác giả, thích video và xem bình luận." />}
             <SuggestAccount label="Suggested Accounts" data={suggestedUsers} loading={loading} />
+            <GoToTop />
             {/* <SuggestAccount label="Suggested Accounts" data={suggestedUsers} /> */}
             {/* <SuggestAccount label="Following Accounts" data={followingAccounts} /> */}
         </aside>

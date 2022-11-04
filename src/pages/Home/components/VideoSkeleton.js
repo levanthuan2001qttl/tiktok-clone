@@ -5,17 +5,17 @@ function VideoSkeleton({ card }) {
         .fill(0)
         .map((_i, index) => {
             return (
-                <div key={index}>
-                    <div className="d-lex">
+                <div key={index} style={{ marginBottom: '180px', marginTop: '20px' }}>
+                    <div className="d-flex">
                         <Skeleton circle width={50} height={50} />
-                        <div className="d-lex flex-column">
-                            <Skeleton width={100} />
-                            <Skeleton width={90} />
+                        <div className="d-lex flex-column" style={{ marginLeft: '16px' }}>
+                            <Skeleton width={250} />
+                            <Skeleton width={200} />
                         </div>
                     </div>
                     <div>
-                        <Skeleton width={150} />
-                        <Skeleton width={140} />
+                        <Skeleton width={300} />
+                        <Skeleton width={260} />
                     </div>
                 </div>
             );

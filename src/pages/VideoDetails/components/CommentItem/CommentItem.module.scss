@@ -1,0 +1,55 @@
+.comment-item {
+    display: flex;
+    justify-content: space-between;
+    // align-items: center;
+}
+
+.comment-item-information {
+    display: flex;
+    justify-content: space-between;
+    // align-items: center;
+    margin-bottom: 20px;
+
+    img {
+        object-fit: cover;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 14px;
+    }
+}
+
+.info-name-comment {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.info-name-link {
+    &:hover {
+        color: #000;
+        text-decoration: underline;
+    }
+}
+
+.content-comment {
+    font-size: 16px;
+    line-height: 22px;
+    white-space: pre-line;
+    word-break: break-word;
+    margin-bottom: 6px;
+}
+
+.info-time-reply {
+    color: rgba(22, 24, 35, 0.5);
+    font-size: 16px;
+    line-height: 20px;
+
+    span {
+        margin-right: 20px;
+    }
+}
+
+.comment-item-heart-btn {
+    cursor: pointer;
+    background: none;
+}

@@ -56,7 +56,7 @@
 .outline {
     color: var(--primary);
     border-color: currentColor;
-    width: 100%;
+    // width: 100%;
 
     &:hover {
         border-color: currentColor;
@@ -95,4 +95,8 @@
 
 .custom-login {
     color: red;
+}
+
+.w-100 {
+    width: 100%;
 }

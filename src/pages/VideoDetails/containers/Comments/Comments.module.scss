@@ -1,0 +1,37 @@
+.comment-container {
+    width: 100%;
+    padding: 24px 32px;
+    box-sizing: border-box;
+    background-color: rgb(248, 248, 248);
+    border-top: 1px solid rgba(22, 24, 35, 0.2);
+    border-bottom: 1px solid rgba(22, 24, 35, 0.2);
+    height: 300px;
+    overflow: scroll;
+}
+
+.comment-input {
+    padding: 15px 16px 12px;
+    min-height: 100px;
+}
+
+.comment-input-form {
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-comment-values {
+    background-color: rgba(22, 24, 35, 0.06);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 0px 9px;
+    height: 44px;
+    flex: 1;
+
+    &:hover {
+        border-color: rgba(22, 24, 35, 0.2);
+    }
+
+    &:focus-within {
+        border-color: rgba(22, 24, 35, 0.2);
+    }
+}

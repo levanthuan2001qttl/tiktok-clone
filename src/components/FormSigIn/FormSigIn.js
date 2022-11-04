@@ -1,6 +1,7 @@
+/* eslint-disable no-template-curly-in-string */
 import classNames from 'classnames/bind';
 import styles from './FormSigIn.module.scss';
-import { QRIcon, UserIcon, FacebookIcon, GoogleIcon, TwitterIcon } from './../Icons/Icons';
+// import { QRIcon, UserIcon, FacebookIcon, GoogleIcon, TwitterIcon } from './../Icons/Icons';
 import { Link } from 'react-router-dom';
 import { useRef } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
@@ -9,55 +10,56 @@ import { fetchSignIn } from '~/modules/authenticationSlice/authenticationSlice';
 import { statusSignInSelector, userDetailSelector } from '~/modules/authenticationSlice/authSelector';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { fetchGetCurrentUser } from '~/modules/authenticationSlice/authenticationSlice';
 
 const cx = classNames.bind(styles);
 
-const MENU_ITEM = [
-    {
-        icon: <QRIcon />,
-        title: 'Sử dụng mã QR',
-    },
-    {
-        icon: <UserIcon />,
-        title: 'Số điện thoại / Email / TikTok ID',
-    },
-    {
-        icon: <FacebookIcon />,
-        title: 'Tiếp tục với Facebook',
-    },
-    {
-        icon: <GoogleIcon />,
-        title: 'Tiếp tục với Google',
-    },
-    {
-        icon: <TwitterIcon />,
-        title: 'Tiếp tục với Twitter',
-    },
-    {
-        icon: <TwitterIcon />,
-        title: 'Tiếp tục với Twitter',
-    },
-    {
-        icon: <TwitterIcon />,
-        title: 'Tiếp tục với Twitter',
-    },
-    {
-        icon: <TwitterIcon />,
-        title: 'Tiếp tục với Twitter',
-    },
-    {
-        icon: <TwitterIcon />,
-        title: 'Tiếp tục với Twitter',
-    },
-    {
-        icon: <TwitterIcon />,
-        title: 'Tiếp tục với Twitter',
-    },
-    {
-        icon: <TwitterIcon />,
-        title: 'Tiếp tục với Twitter',
-    },
-];
+// const MENU_ITEM = [
+//     {
+//         icon: <QRIcon />,
+//         title: 'Sử dụng mã QR',
+//     },
+//     {
+//         icon: <UserIcon />,
+//         title: 'Số điện thoại / Email / TikTok ID',
+//     },
+//     {
+//         icon: <FacebookIcon />,
+//         title: 'Tiếp tục với Facebook',
+//     },
+//     {
+//         icon: <GoogleIcon />,
+//         title: 'Tiếp tục với Google',
+//     },
+//     {
+//         icon: <TwitterIcon />,
+//         title: 'Tiếp tục với Twitter',
+//     },
+//     {
+//         icon: <TwitterIcon />,
+//         title: 'Tiếp tục với Twitter',
+//     },
+//     {
+//         icon: <TwitterIcon />,
+//         title: 'Tiếp tục với Twitter',
+//     },
+//     {
+//         icon: <TwitterIcon />,
+//         title: 'Tiếp tục với Twitter',
+//     },
+//     {
+//         icon: <TwitterIcon />,
+//         title: 'Tiếp tục với Twitter',
+//     },
+//     {
+//         icon: <TwitterIcon />,
+//         title: 'Tiếp tục với Twitter',
+//     },
+//     {
+//         icon: <TwitterIcon />,
+//         title: 'Tiếp tục với Twitter',
+//     },
+// ];
 
 function FormSigIn({ closeModalSignIn }) {
     const dispatch = useDispatch();
@@ -66,7 +68,14 @@ function FormSigIn({ closeModalSignIn }) {
     const userDetail = useSelector(userDetailSelector);
 
     const toastId = useRef();
-    console.log({ userDetail, statusSignIn });
+
+    const token = JSON.parse(localStorage.getItem('token'));
+
+    useEffect(() => {
+        if (token) {
+            dispatch(fetchGetCurrentUser(token));
+        }
+    }, [dispatch, token]);
 
     useEffect(() => {
         if (userDetail.message && statusSignIn === 'idle') {
@@ -88,7 +97,6 @@ function FormSigIn({ closeModalSignIn }) {
     }, [statusSignIn]);
 
     const validateMessages = {
-        // eslint-disable-next-line no-template-curly-in-string
         required: '${label} is required!',
         types: {
             email: '${label} is not a valid email!',

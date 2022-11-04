@@ -9,6 +9,7 @@ import Live from '~/pages/Live';
 
 import configs from '~/configs';
 import Listing from '~/pages/Listing';
+import VideoDetails from '~/pages/VideoDetails';
 
 const publicRoutes = [
     {
@@ -40,6 +41,11 @@ const publicRoutes = [
     },
 ];
 
-const privateRoutes = [];
+const privateRoutes = [
+    {
+        path: configs.routes.videoDetails,
+        component: VideoDetails,
+    },
+];
 
 export { publicRoutes, privateRoutes };

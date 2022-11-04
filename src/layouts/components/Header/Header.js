@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCircleQuestion,
@@ -31,7 +31,7 @@ import { InboxIcon, MessageIcon, UploadIcon } from '~/components/Icons';
 import Search from '../Search';
 import FormSigIn from '~/components/FormSigIn';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchGetCurrentUser } from '~/modules/authenticationSlice/authenticationSlice';
+import authSlice, { fetchGetCurrentUser } from '~/modules/authenticationSlice/authenticationSlice';
 import { getCurrentUserSelector } from '~/modules/authenticationSlice/authSelector';
 
 const cx = classNames.bind(styles);
@@ -89,11 +89,23 @@ function Header() {
         {
             icon: <FontAwesomeIcon icon={faSignOut} />,
             title: 'Log out',
-            to: '/logout',
             separate: true,
         },
     ];
+    const dispatch = useDispatch();
+
     const handleOnChange = (menuItem) => {
+        switch (menuItem.title) {
+            case 'Log out':
+                localStorage.setItem('currentUser', false);
+                localStorage.removeItem('token');
+                dispatch(authSlice.actions.signOut());
+                break;
+
+            default:
+                break;
+        }
+
         console.log(menuItem);
     };
     function openModal() {
@@ -104,16 +116,9 @@ function Header() {
         setIsOpen(false);
     }
 
-    const token = JSON.parse(localStorage.getItem('token'));
-
-    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const getCurrentUser = useSelector(getCurrentUserSelector);
 
-    useEffect(() => {
-        if (token) {
-            dispatch(fetchGetCurrentUser(token));
-        }
-    }, [dispatch, token]);
     const currentUser = localStorage.getItem('currentUser');
     return (
         <header className={cx('wrapper')}>
@@ -124,10 +129,10 @@ function Header() {
                 <Search />
 
                 <div className={cx('action')}>
-                    {currentUser ? (
+                    {getCurrentUser ? (
                         <>
                             <Tippy delay={[0, 50]} content="Upload video" placement="bottom">
-                                <button className={cx('action-btn')}>
+                                <button className={cx('action-btn')} onClick={() => navigate('/upload')}>
                                     <UploadIcon />
                                 </button>
                             </Tippy>
@@ -145,20 +150,20 @@ function Header() {
                         </>
                     ) : (
                         <>
-                            <Button leftIcon={<FontAwesomeIcon icon={faPlus} />} outlineBrow to="/">
+                            {/* <Button leftIcon={<FontAwesomeIcon icon={faPlus} />} outlineBrow to="/">
                                 Upload
-                            </Button>
+                            </Button> */}
                             <Button
                                 onClick={openModal}
                                 primary
                                 rightIcon={<FontAwesomeIcon className={cx('search-icon')} icon={faSignIn} />}
                             >
-                                Log in
+                                Đăng nhập
                             </Button>
                         </>
                     )}
                     <Menu items={currentUser ? userMenu : MENU_ITEM} onChange={handleOnChange}>
-                        {currentUser ? (
+                        {getCurrentUser ? (
                             <button className={cx('action-btn')}>
                                 <Image
                                     className={cx('user-avatar')}

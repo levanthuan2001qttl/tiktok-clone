@@ -1,8 +1,23 @@
 import * as httpRequest from '~/utils/httpRequest';
 
+const token = JSON.parse(localStorage.getItem('token'));
+
 export const signIn = async (body) => {
     const response = await httpRequest.post('/auth/login', body);
     return response;
+};
+
+export const signOut = async (body) => {
+    const response = await httpRequest.post(
+        '/auth/logout',
+        {},
+        {
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+        },
+    );
+    return response.data;
 };
 
 export const getCurrentUser = async (token) => {
@@ -40,6 +55,42 @@ export const getFollowingAccount = async ({ page }) => {
                 page,
             },
         });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const followUser = async (userId) => {
+    try {
+        const response = await httpRequest.post(
+            `/users/${userId}/follow`,
+            {},
+            {
+                headers: {
+                    Authorization: 'Bearer ' + token,
+                },
+            },
+        );
+
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const unFollowUser = async (userId) => {
+    try {
+        const response = await httpRequest.post(
+            `/users/${userId}/unfollow`,
+            {},
+            {
+                headers: {
+                    Authorization: 'Bearer ' + token,
+                },
+            },
+        );
+
         return response.data;
     } catch (error) {
         console.log(error);

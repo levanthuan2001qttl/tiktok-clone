@@ -1,0 +1,18 @@
+.scroll {
+    position: fixed;
+    right: 24px;
+    bottom: 16px;
+    border: none;
+    background: none;
+    outline: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 52px;
+    background: rgba(255, 59, 92, 1);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+    width: 40px;
+    height: 40px;
+}

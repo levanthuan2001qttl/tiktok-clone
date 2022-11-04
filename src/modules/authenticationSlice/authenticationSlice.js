@@ -1,4 +1,4 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { userService } from '~/services';
 
@@ -7,9 +7,13 @@ const authSlice = createSlice({
     initialState: {
         status: 'idle',
         user: {},
-        currentUser: {},
+        currentUser: '',
     },
-    reducers: {},
+    reducers: {
+        signOut: (state) => {
+            state.currentUser = '';
+        },
+    },
 
     extraReducers: (builder) => {
         builder.addCase(fetchSignIn.pending, (state, action) => {

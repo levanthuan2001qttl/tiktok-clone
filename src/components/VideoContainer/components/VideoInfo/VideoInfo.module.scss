@@ -1,0 +1,57 @@
+.video-container-author {
+    display: flex;
+
+    .video-container-nickname {
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 25px;
+        margin-right: 6px;
+
+        &:hover {
+            text-decoration: underline;
+            color: var(--text-color);
+        }
+    }
+
+    .video-container-bio {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 28px;
+    }
+
+    .video-container-created_at {
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 28px;
+        margin-left: 10px;
+    }
+}
+
+.video-container-has-tag {
+    display: flex;
+
+    .video-container-has-tag-link {
+        margin-right: 6px;
+
+        &:hover {
+            text-decoration: underline;
+            color: var(--text-color);
+        }
+    }
+}
+
+.video-container-video-music {
+    display: flex;
+
+    .video-container-video-music-link {
+        &:hover {
+            text-decoration: underline;
+            color: var(--text-color);
+        }
+    }
+
+    .video-container-music-icon {
+        margin-right: 6px;
+        font-size: 14px;
+    }
+}
