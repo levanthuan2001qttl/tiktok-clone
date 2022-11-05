@@ -68,7 +68,6 @@ const MENU_ITEM = [
 ];
 
 function Header() {
-    const [modalIsOpen, setIsOpen] = useState(false);
     const userMenu = [
         {
             icon: <FontAwesomeIcon icon={faUser} />,
@@ -93,6 +92,12 @@ function Header() {
         },
     ];
     const dispatch = useDispatch();
+    const token = JSON.parse(localStorage.getItem('token'));
+    useEffect(() => {
+        if (token) {
+            dispatch(fetchGetCurrentUser(token));
+        }
+    }, []);
 
     const handleOnChange = (menuItem) => {
         switch (menuItem.title) {
@@ -100,26 +105,21 @@ function Header() {
                 localStorage.setItem('currentUser', false);
                 localStorage.removeItem('token');
                 dispatch(authSlice.actions.signOut());
+                navigate('/sign-in');
+                window.location.reload();
                 break;
 
             default:
                 break;
         }
-
-        console.log(menuItem);
     };
-    function openModal() {
-        setIsOpen(true);
-    }
-
-    function closeModal() {
-        setIsOpen(false);
-    }
 
     const navigate = useNavigate();
     const getCurrentUser = useSelector(getCurrentUserSelector);
 
-    const currentUser = localStorage.getItem('currentUser');
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+    console.log('currentUser', currentUser);
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -129,7 +129,7 @@ function Header() {
                 <Search />
 
                 <div className={cx('action')}>
-                    {getCurrentUser ? (
+                    {currentUser ? (
                         <>
                             <Tippy delay={[0, 50]} content="Upload video" placement="bottom">
                                 <button className={cx('action-btn')} onClick={() => navigate('/upload')}>
@@ -154,7 +154,7 @@ function Header() {
                                 Upload
                             </Button> */}
                             <Button
-                                onClick={openModal}
+                                onClick={() => navigate('sign-in')}
                                 primary
                                 rightIcon={<FontAwesomeIcon className={cx('search-icon')} icon={faSignIn} />}
                             >
@@ -163,7 +163,7 @@ function Header() {
                         </>
                     )}
                     <Menu items={currentUser ? userMenu : MENU_ITEM} onChange={handleOnChange}>
-                        {getCurrentUser ? (
+                        {currentUser ? (
                             <button className={cx('action-btn')}>
                                 <Image
                                     className={cx('user-avatar')}
@@ -179,10 +179,6 @@ function Header() {
                             </button>
                         )}
                     </Menu>
-
-                    <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
-                        <FormSigIn closeModalSignIn={closeModal} />
-                    </Modal>
                 </div>
             </div>
         </header>

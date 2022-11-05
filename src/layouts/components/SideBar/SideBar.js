@@ -38,8 +38,6 @@ function SideBar() {
         };
         fetchApi();
     }, []);
-    const getCurrentUser = useSelector(getCurrentUserSelector);
-
     return (
         <aside className={cx('wrapper')}>
             <Menu>
@@ -57,7 +55,7 @@ function SideBar() {
                 />
                 <MenuItem title="Live" to={config.routes.live} icon={<LiveIcon />} activeIcon={<LiveActiveIcon />} />
             </Menu>
-            {!getCurrentUser && <RequireLogin title="Đăng nhập để follow các tác giả, thích video và xem bình luận." />}
+            {/* {!getCurrentUser && <RequireLogin title="Đăng nhập để follow các tác giả, thích video và xem bình luận." />} */}
             <SuggestAccount label="Suggested Accounts" data={suggestedUsers} loading={loading} />
             <GoToTop />
             {/* <SuggestAccount label="Suggested Accounts" data={suggestedUsers} /> */}

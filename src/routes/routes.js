@@ -10,6 +10,7 @@ import Live from '~/pages/Live';
 import configs from '~/configs';
 import Listing from '~/pages/Listing';
 import VideoDetails from '~/pages/VideoDetails';
+import SignIn from '~/pages/SignIn';
 
 const publicRoutes = [
     {
@@ -38,6 +39,10 @@ const publicRoutes = [
         path: configs.routes.listing,
         component: Listing,
         layout: HeaderOnly,
+    },
+    {
+        path: configs.routes.signIn,
+        component: SignIn,
     },
 ];
 

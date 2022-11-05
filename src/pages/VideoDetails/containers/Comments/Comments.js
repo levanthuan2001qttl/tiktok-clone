@@ -28,7 +28,8 @@ function Comment({ videoUid, videoId }) {
 
     useEffect(() => {
         dispatch(fetchComments(videoId));
-    }, [dispatch, videoId]);
+        setNewComments('');
+    }, [videoId]);
 
     const handleChange = (e) => {
         setComment(e.target.value);

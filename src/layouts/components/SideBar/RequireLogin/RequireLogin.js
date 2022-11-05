@@ -2,7 +2,6 @@ import classNames from 'classnames/bind';
 import Button from '~/components/Button';
 import styles from './RequireLogin.module.scss';
 import { useState } from 'react';
-import Modal from '~/components/Modal';
 import FormSigIn from '~/components/FormSigIn';
 
 const cx = classNames.bind(styles);
@@ -17,7 +16,6 @@ function RequireLogin({ title }) {
     function closeModal() {
         setIsOpen(false);
     }
-
     return (
         <div className={cx('wrapper')}>
             <p className={cx('label')}>{title}</p>
@@ -26,9 +24,7 @@ function RequireLogin({ title }) {
                     Đăng nhập
                 </Button>
             </div>
-            <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
-                <FormSigIn closeModalSignIn={closeModal} />
-            </Modal>
+            <FormSigIn isOpen={modalIsOpen} onRequestClose={closeModal} />
         </div>
     );
 }

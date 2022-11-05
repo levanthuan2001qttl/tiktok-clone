@@ -32,7 +32,6 @@ function Home() {
     }, [pagination.page, dispatch]);
 
     const token = JSON.parse(localStorage.getItem('token'));
-
     useEffect(() => {
         if (token) {
             dispatch(fetchGetCurrentUser(token));

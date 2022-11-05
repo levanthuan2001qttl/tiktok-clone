@@ -8,6 +8,8 @@ const authSlice = createSlice({
         status: 'idle',
         user: {},
         currentUser: '',
+        successAuth: '',
+        errorAuth: '',
     },
     reducers: {
         signOut: (state) => {
@@ -22,11 +24,11 @@ const authSlice = createSlice({
         builder.addCase(fetchSignIn.fulfilled, (state, action) => {
             state.status = 'idle';
             if (action.payload.message) {
-                state.user.message = action.payload.message;
-                delete state.user.response;
+                state.errorAuth = action.payload.message;
+                // state.successAuth = '';
             } else {
-                state.user.response = action.payload;
-                delete state.user.message;
+                state.successAuth = 'success';
+                // state.errorAuth = '';
             }
         });
         builder.addCase(fetchGetCurrentUser.fulfilled, (state, action) => {
@@ -42,7 +44,6 @@ export const fetchSignIn = createAsyncThunk('auth/fetchSignIn', async (body) => 
         return response.data;
         // return response;
     } catch (error) {
-        console.log(error.response.data);
         return error.response.data;
         // return error;
     }

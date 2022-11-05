@@ -69,13 +69,17 @@ function Video({ data, index }) {
     };
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const videosListForYou = useSelector(getVideoListForYouSelector);
 
     const handleClickSeeDetailVideo = () => {
-        navigate(`/@${data.user.nickname}/video/${data.uuid}/${data.id}`);
-        localStorage.setItem('videoIndex', index);
-        dispatch(detailVideoSlice.actions.selectedVideoIndex(index));
-        dispatch(detailVideoSlice.actions.saveVideo(videosListForYou[index]));
+        const token = JSON.parse(localStorage.getItem('token'));
+        if (token) {
+            navigate(`/@${data.user.nickname}/video/${data.uuid}/${data.id}`);
+            localStorage.setItem('videoIndex', index);
+            dispatch(detailVideoSlice.actions.selectedVideoIndex(index));
+            dispatch(detailVideoSlice.actions.saveVideo(data));
+        } else {
+            navigate('/sign-in');
+        }
     };
 
     return (

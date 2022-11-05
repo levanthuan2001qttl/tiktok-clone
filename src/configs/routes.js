@@ -1,4 +1,5 @@
 const routes = {
+    signIn: '/sign-in',
     home: '/',
     following: '/following',
     profile: '/profile',

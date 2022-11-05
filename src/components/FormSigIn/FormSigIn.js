@@ -2,100 +2,17 @@
 import classNames from 'classnames/bind';
 import styles from './FormSigIn.module.scss';
 // import { QRIcon, UserIcon, FacebookIcon, GoogleIcon, TwitterIcon } from './../Icons/Icons';
-import { Link } from 'react-router-dom';
-import { useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Checkbox, Form, Input } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchSignIn } from '~/modules/authenticationSlice/authenticationSlice';
-import { statusSignInSelector, userDetailSelector } from '~/modules/authenticationSlice/authSelector';
-import { useEffect } from 'react';
 import { toast } from 'react-toastify';
+import Modal from '~/components/Modal';
+import { userService } from '~/services';
 import { fetchGetCurrentUser } from '~/modules/authenticationSlice/authenticationSlice';
+import { useDispatch } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
-// const MENU_ITEM = [
-//     {
-//         icon: <QRIcon />,
-//         title: 'Sử dụng mã QR',
-//     },
-//     {
-//         icon: <UserIcon />,
-//         title: 'Số điện thoại / Email / TikTok ID',
-//     },
-//     {
-//         icon: <FacebookIcon />,
-//         title: 'Tiếp tục với Facebook',
-//     },
-//     {
-//         icon: <GoogleIcon />,
-//         title: 'Tiếp tục với Google',
-//     },
-//     {
-//         icon: <TwitterIcon />,
-//         title: 'Tiếp tục với Twitter',
-//     },
-//     {
-//         icon: <TwitterIcon />,
-//         title: 'Tiếp tục với Twitter',
-//     },
-//     {
-//         icon: <TwitterIcon />,
-//         title: 'Tiếp tục với Twitter',
-//     },
-//     {
-//         icon: <TwitterIcon />,
-//         title: 'Tiếp tục với Twitter',
-//     },
-//     {
-//         icon: <TwitterIcon />,
-//         title: 'Tiếp tục với Twitter',
-//     },
-//     {
-//         icon: <TwitterIcon />,
-//         title: 'Tiếp tục với Twitter',
-//     },
-//     {
-//         icon: <TwitterIcon />,
-//         title: 'Tiếp tục với Twitter',
-//     },
-// ];
-
-function FormSigIn({ closeModalSignIn }) {
-    const dispatch = useDispatch();
-
-    const statusSignIn = useSelector(statusSignInSelector);
-    const userDetail = useSelector(userDetailSelector);
-
-    const toastId = useRef();
-
-    const token = JSON.parse(localStorage.getItem('token'));
-
-    useEffect(() => {
-        if (token) {
-            dispatch(fetchGetCurrentUser(token));
-        }
-    }, [dispatch, token]);
-
-    useEffect(() => {
-        if (userDetail.message && statusSignIn === 'idle') {
-            toast.error(userDetail.message);
-        }
-        if (userDetail.response && statusSignIn === 'idle') {
-            toast.success('Sign in successfully');
-            localStorage.setItem('currentUser', true);
-            closeModalSignIn();
-        }
-    }, [userDetail, statusSignIn, closeModalSignIn]);
-
-    useEffect(() => {
-        if (statusSignIn === 'loading') {
-            toastId.current = toast.loading('Loading');
-        } else {
-            toast.dismiss(toastId.current || '');
-        }
-    }, [statusSignIn]);
-
+function FormSigIn({ isOpen, onRequestClose }) {
     const validateMessages = {
         required: '${label} is required!',
         types: {
@@ -107,50 +24,75 @@ function FormSigIn({ closeModalSignIn }) {
         },
     };
 
-    const onFinish = (formName) => {
-        dispatch(fetchSignIn(formName.user));
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const onFinish = async (formName) => {
+        try {
+            const response = await userService.signIn(formName.user);
+            localStorage.setItem('token', JSON.stringify(response.meta.token));
+            localStorage.setItem('currentUser', true);
+            if (response.data) {
+                toast.success('Sign in successfully');
+                onRequestClose();
+                dispatch(fetchGetCurrentUser(response.meta.token));
+                navigate('/');
+                window.location.reload();
+            }
+        } catch (error) {
+            console.log(error.response.data);
+            toast.error(`Failure ${error.response.data.status_code} ${error.response.data.message} `);
+        }
     };
-    return (
-        <div className={cx('sign-in-modal')}>
-            <h4 className={cx('sign-in-modal-title')}>Đăng nhập vào TikTok</h4>
-            <div className={cx('sign-body')}>
-                <Form
-                    name="basic"
-                    labelCol={{ span: 8 }}
-                    wrapperCol={{ span: 16 }}
-                    initialValues={{ remember: true }}
-                    onFinish={onFinish}
-                    autoComplete="off"
-                    validateMessages={validateMessages}
-                >
-                    <Form.Item label="Email" name={['user', 'email']} rules={[{ required: true, type: 'email' }]}>
-                        <Input />
-                    </Form.Item>
 
-                    <Form.Item
-                        label="Password"
-                        name={['user', 'password']}
-                        rules={[{ required: true, min: 1, max: 20 }]}
+    const renderForm = () => {
+        return (
+            <div className={cx('sign-in-modal')}>
+                <h4 className={cx('sign-in-modal-title')}>Đăng nhập vào TikTok</h4>
+                <div className={cx('sign-body')}>
+                    <Form
+                        name="basic"
+                        labelCol={{ span: 8 }}
+                        wrapperCol={{ span: 16 }}
+                        initialValues={{ remember: true }}
+                        onFinish={onFinish}
+                        autoComplete="off"
+                        validateMessages={validateMessages}
                     >
-                        <Input.Password />
-                    </Form.Item>
+                        <Form.Item label="Email" name={['user', 'email']} rules={[{ required: true, type: 'email' }]}>
+                            <Input />
+                        </Form.Item>
 
-                    <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
-                        <Checkbox>Remember me</Checkbox>
-                    </Form.Item>
+                        <Form.Item
+                            label="Password"
+                            name={['user', 'password']}
+                            rules={[{ required: true, min: 1, max: 20 }]}
+                        >
+                            <Input.Password />
+                        </Form.Item>
 
-                    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                        <Button type="primary" htmlType="submit">
-                            Submit
-                        </Button>
-                    </Form.Item>
-                </Form>
+                        <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
+                            <Checkbox>Remember me</Checkbox>
+                        </Form.Item>
+
+                        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                            <Button type="primary" htmlType="submit">
+                                Submit
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </div>
+                <div className={cx('sign-in-modal-footer')}>
+                    <span>Bạn không có tài khoản?</span>
+                    <Link to={'/sign-up'}>Đăng ký.</Link>
+                </div>
             </div>
-            <div className={cx('sign-in-modal-footer')}>
-                <span>Bạn không có tài khoản?</span>
-                <Link to={'/sign-up'}>Đăng ký.</Link>
-            </div>
-        </div>
+        );
+    };
+
+    return (
+        <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
+            {renderForm()}
+        </Modal>
     );
 }
 

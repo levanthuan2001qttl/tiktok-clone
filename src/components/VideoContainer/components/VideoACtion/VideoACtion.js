@@ -6,20 +6,38 @@ import MenuShare from '../MenuShare/MenuShare';
 import { useDispatch } from 'react-redux';
 import { fetchLikeVideo, fetchUnLikeVideo } from '~/modules/homeSlice/homeSlice';
 import { useNavigate } from 'react-router-dom';
+import detailVideoSlice from '~/modules/detailVideoSlice/detailVideoSlice';
 const cx = classNames.bind(styles);
 
-function VideoACtion({ data }) {
+function VideoACtion({ data, index }) {
     const dispatch = useDispatch();
-
+    const token = JSON.parse(localStorage.getItem('token'));
     const handleLikeVideo = async (uid) => {
-        dispatch(fetchLikeVideo(uid));
+        if (token) {
+            dispatch(fetchLikeVideo(uid));
+        } else {
+            navigate('/sign-in');
+        }
     };
 
     const handleUnLikeVideo = async (uid) => {
-        dispatch(fetchUnLikeVideo(uid));
+        if (token) {
+            dispatch(fetchUnLikeVideo(uid));
+        } else {
+            navigate('/sign-in');
+        }
     };
     const navigate = useNavigate();
-
+    const handleClickSeeDetailVideo = () => {
+        if (token) {
+            navigate(`/@${data.user.nickname}/video/${data.uuid}/${data.id}`);
+            localStorage.setItem('videoIndex', index);
+            dispatch(detailVideoSlice.actions.selectedVideoIndex(index));
+            dispatch(detailVideoSlice.actions.saveVideo(data));
+        } else {
+            navigate('/sign-in');
+        }
+    };
     return (
         <div className={cx('feed-video-action')}>
             <MenuShare>
@@ -31,10 +49,7 @@ function VideoACtion({ data }) {
                 </button>
             </MenuShare>
 
-            <button
-                className={cx('feed-video-button')}
-                onClick={() => navigate(`/@${data.user.nickname}/video/${data.uuid}/${data.id}`)}
-            >
+            <button className={cx('feed-video-button')} onClick={handleClickSeeDetailVideo}>
                 <span className={cx('feed-video-span-icon')}>
                     <CommentIcon />
                 </span>
