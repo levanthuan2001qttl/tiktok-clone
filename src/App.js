@@ -4,6 +4,8 @@ import { privateRoutes, publicRoutes } from '~/routes';
 import DefaultLayout from '~/layouts';
 import Listing from './pages/Listing';
 import { ToastContainer } from 'react-toastify';
+import { PrivateRoute, PublicRoute } from '~/routes/config';
+
 function App() {
     //hello
     return (
@@ -28,7 +30,7 @@ function App() {
 
                         if (route.layout) {
                             Layout = route.layout;
-                        } else if (route.layout === null) {
+                        } else if (route.layout === undefined) {
                             Layout = Fragment;
                         }
 
@@ -37,16 +39,42 @@ function App() {
                                 key={index}
                                 path={route.path}
                                 element={
-                                    <Layout>
-                                        <Page />
-                                    </Layout>
+                                    <PublicRoute
+                                        element={
+                                            <Layout>
+                                                <Page />
+                                            </Layout>
+                                        }
+                                    />
                                 }
                             />
                         );
                     })}
                     {privateRoutes.map((route, index) => {
                         const Page = route.component;
-                        return <Route key={index} path={route.path} element={<Page />} />;
+                        let Layout = DefaultLayout;
+
+                        if (route.layout) {
+                            Layout = route.layout;
+                        } else if (route.layout === undefined) {
+                            Layout = Fragment;
+                        }
+
+                        return (
+                            <Route
+                                key={index}
+                                path={route.path}
+                                element={
+                                    <PrivateRoute
+                                        element={
+                                            <Layout>
+                                                <Page />
+                                            </Layout>
+                                        }
+                                    />
+                                }
+                            />
+                        );
                     })}
                     <Route path="/listing" component={<Listing />} />
                 </Routes>

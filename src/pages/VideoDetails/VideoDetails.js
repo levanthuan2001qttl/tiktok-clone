@@ -46,7 +46,6 @@ function VideoDetail() {
         dispatch(fetchGetAVideo(uid));
     }, [dispatch, uid]);
 
-    console.log({ videosListForYou });
     useEffect(() => {
         localStorage.setItem('videoIndex', indexCurrent);
         if (indexCurrent === 14) {

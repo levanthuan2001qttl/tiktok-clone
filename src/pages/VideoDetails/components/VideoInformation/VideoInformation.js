@@ -1,9 +1,9 @@
 import classNames from 'classnames/bind';
 import styles from './VideoInformation.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '~/components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMusic } from '@fortawesome/free-solid-svg-icons';
+import { faMusic, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import {
     CommentIcon,
     HeartIcon,
@@ -29,32 +29,52 @@ const cx = classNames.bind(styles);
 
 function VideoInformation({ data }) {
     const dispatch = useDispatch();
-
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const navigate = useNavigate();
     const handleLikeVideo = async (uid) => {
-        dispatch(fetchLikeAVideo(uid));
+        if (currentUser) {
+            dispatch(fetchLikeAVideo(uid));
+        } else {
+            navigate('/sign-in');
+        }
     };
 
     const handleUnLikeVideo = async (uid) => {
-        dispatch(fetchUnLikeAVideo(uid));
+        if (currentUser) {
+            dispatch(fetchUnLikeAVideo(uid));
+        } else {
+            navigate('/sign-in');
+        }
     };
     const getCurrentUser = useSelector(getCurrentUserSelector);
 
     const handleUnFollow = (userId) => {
-        dispatch(fetchUnFollowAUser(userId));
+        if (currentUser) {
+            dispatch(fetchUnFollowAUser(userId));
+        } else {
+            navigate('/sign-in');
+        }
     };
 
     const handleFollow = (userId) => {
-        dispatch(fetchFollowAUser(userId));
+        if (currentUser) {
+            dispatch(fetchFollowAUser(userId));
+        } else {
+            navigate('/sign-in');
+        }
     };
     return (
         <div style={{ minHeight: '300px' }}>
             <div className={cx('info-container')}>
                 <div className="d-flex justify-space-between align-center">
-                    <Link to={'#'}>
+                    <Link to={`/@${data.user.nickname}/${data.user.id}`}>
                         <Image src={data.user.avatar} alt="" className={cx('info-avatar')} />
                     </Link>
-                    <Link to={'#'} className={cx('info-name')}>
-                        <span>{data.user.nickname}</span>
+                    <Link to={`/@${data.user.nickname}/${data.user.id}`} className={cx('info-name')}>
+                        <span>
+                            {data.user.nickname}{' '}
+                            {data.user.tick && <FontAwesomeIcon icon={faCheckCircle} className={cx('check')} />}
+                        </span>
                         <p>
                             {data.user.last_name} . {data.created_at.slice(5, 10)}
                         </p>

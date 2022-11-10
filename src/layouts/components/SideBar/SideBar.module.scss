@@ -1,7 +1,13 @@
 .wrapper {
     width: var(--width-sidebar);
-    min-height: 1000px;
     padding: 20px 0 26px 8px;
     margin-left: -18px;
     position: fixed;
+    top: 60px;
+    bottom: 0px;
+
+    &:hover {
+        overflow: hidden auto;
+        overscroll-behavior-y: contain;
+    }
 }

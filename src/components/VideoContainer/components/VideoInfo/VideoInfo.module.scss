@@ -1,6 +1,6 @@
 .video-container-author {
     display: flex;
-
+    align-items: center;
     .video-container-nickname {
         font-weight: 700;
         font-size: 18px;
@@ -29,7 +29,7 @@
 
 .video-container-has-tag {
     display: flex;
-
+    flex-direction: column;
     .video-container-has-tag-link {
         margin-right: 6px;
 
@@ -54,4 +54,19 @@
         margin-right: 6px;
         font-size: 14px;
     }
+}
+
+.check {
+    margin-left: 4px;
+    font-size: 1.4rem;
+    color: #20d5ec;
+    margin-right: 4px;
+}
+
+.user-card-user-bio {
+    font-size: 14px;
+    line-height: 20px;
+    padding-top: 16px;
+    margin-top: 16px;
+    border-top: 1px solid rgba(22, 24, 35, 0.12);
 }

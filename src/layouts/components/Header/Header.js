@@ -27,12 +27,11 @@ import Menu from '~/components/Popper/Menu/Menu';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import Image from '~/components/Image/Image';
 import { InboxIcon, MessageIcon, UploadIcon } from '~/components/Icons';
-
 import Search from '../Search';
-import FormSigIn from '~/components/FormSigIn';
 import { useDispatch, useSelector } from 'react-redux';
 import authSlice, { fetchGetCurrentUser } from '~/modules/authenticationSlice/authenticationSlice';
 import { getCurrentUserSelector } from '~/modules/authenticationSlice/authSelector';
+import FormSigIn from '~/components/FormSigIn';
 
 const cx = classNames.bind(styles);
 
@@ -72,7 +71,6 @@ function Header() {
         {
             icon: <FontAwesomeIcon icon={faUser} />,
             title: 'View profile',
-            to: '/@hoaa',
         },
         {
             icon: <FontAwesomeIcon icon={faCoins} />,
@@ -91,13 +89,21 @@ function Header() {
             separate: true,
         },
     ];
+
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const getCurrentUser = useSelector(getCurrentUserSelector);
+
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+    const [modalIsOpen, setIsOpen] = useState(false);
     const token = JSON.parse(localStorage.getItem('token'));
+
     useEffect(() => {
         if (token) {
             dispatch(fetchGetCurrentUser(token));
         }
-    }, []);
+    }, [dispatch, token]);
 
     const handleOnChange = (menuItem) => {
         switch (menuItem.title) {
@@ -108,18 +114,23 @@ function Header() {
                 navigate('/sign-in');
                 window.location.reload();
                 break;
+            case 'View profile':
+                navigate(`/@${getCurrentUser.nickname}/${getCurrentUser.id}`);
+                break;
 
             default:
                 break;
         }
     };
 
-    const navigate = useNavigate();
-    const getCurrentUser = useSelector(getCurrentUserSelector);
+    function openModal() {
+        setIsOpen(true);
+    }
 
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    function closeModal() {
+        setIsOpen(false);
+    }
 
-    console.log('currentUser', currentUser);
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -154,7 +165,7 @@ function Header() {
                                 Upload
                             </Button> */}
                             <Button
-                                onClick={() => navigate('sign-in')}
+                                onClick={openModal}
                                 primary
                                 rightIcon={<FontAwesomeIcon className={cx('search-icon')} icon={faSignIn} />}
                             >
@@ -162,6 +173,8 @@ function Header() {
                             </Button>
                         </>
                     )}
+                    <FormSigIn isOpen={modalIsOpen} onRequestClose={closeModal} />
+
                     <Menu items={currentUser ? userMenu : MENU_ITEM} onChange={handleOnChange}>
                         {currentUser ? (
                             <button className={cx('action-btn')}>

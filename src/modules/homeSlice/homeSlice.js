@@ -82,8 +82,8 @@ const homeSlice = createSlice({
     },
 });
 
-export const fetchGetVideoListForYou = createAsyncThunk('home/fetchGetVideoListForYou', async (page) => {
-    const response = await videosService.getVideoListForYou(page);
+export const fetchGetVideoListForYou = createAsyncThunk('home/fetchGetVideoListForYou', async (data) => {
+    const response = await videosService.getVideoListForYou(data);
     return response;
 });
 

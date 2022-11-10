@@ -11,6 +11,7 @@ import { searchService } from '~/services';
 import HeadlessTippy from '@tippyjs/react/headless';
 import { faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -32,9 +33,9 @@ function Search() {
 
         const fetchApi = async () => {
             setLoading(true);
-            const results = await searchService.search(debounced);
+            const results = await searchService.search({ q: debounced });
 
-            setSearchResult(results);
+            setSearchResult(results.data);
             setLoading(false);
         };
         fetchApi();
@@ -57,10 +58,22 @@ function Search() {
             setSearchValue(searchValue);
         }
     };
+
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setShowResults(false);
+
+        if (location.pathname !== '/search') {
+            navigate(`/search/users?q=${searchValue}`);
+        }
+    };
+
     return (
-        <div>
+        <form onSubmit={handleSubmit}>
             <HeadlessTippy
-                // appendTo={() => document.body}
                 interactive
                 visible={showResults && searchResult.length > 0}
                 render={(attrs) => {
@@ -69,7 +82,11 @@ function Search() {
                             <PopperWrapper>
                                 <h3 className={cx('search-title')}>Account</h3>
                                 {searchResult.map((result) => (
-                                    <AccountItem key={result.id} data={result} />
+                                    <AccountItem
+                                        key={result.id}
+                                        data={result}
+                                        onHideSearchResult={() => setShowResults(false)}
+                                    />
                                 ))}
                             </PopperWrapper>
                         </div>
@@ -88,22 +105,22 @@ function Search() {
                     />
 
                     {!!searchValue.trim() && !loading && (
-                        <button className={cx('clear')} onClick={handleClear}>
+                        <span className={cx('clear')} onClick={handleClear}>
                             <FontAwesomeIcon icon={faCircleXmark} />
-                        </button>
+                        </span>
                     )}
 
                     {loading && (
-                        <button className={cx('loading')}>
+                        <span className={cx('loading')}>
                             <FontAwesomeIcon icon={faSpinner} />
-                        </button>
+                        </span>
                     )}
-                    <button className={cx('search-button')} onMouseDown={(e) => e.preventDefault()}>
+                    <button className={cx('search-button')}>
                         <SearchIcon />
                     </button>
                 </div>
             </HeadlessTippy>
-        </div>
+        </form>
     );
 }
 

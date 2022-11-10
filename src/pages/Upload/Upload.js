@@ -17,6 +17,8 @@ function Upload() {
     const [viewable, setViewable] = useState('public');
     const [allows, setAllows] = useState(true);
 
+    const [videoSrc, setVideoSrc] = useState('');
+
     const navigate = useNavigate();
 
     const handleChangeSelected = (target) => {
@@ -33,9 +35,11 @@ function Upload() {
     };
 
     const onChangeVideoFile = (event) => {
+        console.log('file');
         event.stopPropagation();
         event.preventDefault();
         var file = event?.target?.files?.item(0);
+        var url = URL.createObjectURL(file.originFileObj);
 
         setVideoFile(file);
     };
@@ -120,10 +124,6 @@ function Upload() {
                                     value={description}
                                 />
                             </div>
-                            {/* <div className={cx('upload-cover-image')}>
-                                <label>Ảnh bìa</label>
-                                <input />
-                            </div> */}
                             <div className={cx('upload-regime')}>
                                 <label>Ai có thể xem video này</label>
                                 <Select
@@ -137,9 +137,7 @@ function Upload() {
                                     <Select.Option key="private">Riêng tư</Select.Option>
                                 </Select>
                             </div>
-                            {/* <video width="400" controls>
-                                <source src={videoFile && URL.createObjectURL(videoFile)} />
-                            </video> */}
+
                             <div className={cx('upload-regime')}>
                                 <label>Cho phép người dùng:</label>
                                 <Checkbox onChange={handleChangeChecked}>Bình luận</Checkbox>

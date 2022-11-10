@@ -1,0 +1,56 @@
+.sign-in-modal {
+    width: 450px;
+    padding: 0 40px;
+}
+
+.sign-body {
+    height: 398px;
+    overflow: scroll;
+}
+
+.sign-in-modal-title {
+    color: rgb(22, 24, 35);
+    font-size: 32px;
+    margin: 16px auto;
+    font-weight: bold;
+    text-align: center;
+}
+
+.sign-body-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-bottom: 18px;
+    border: 1px solid rgba(22, 24, 35, 0.12);
+    padding: 8px 0;
+    cursor: pointer;
+}
+
+.sign-body-item-icon {
+    left: 12px;
+    font-size: 20px;
+    position: absolute;
+    display: flex;
+}
+
+.sign-body-item-title {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.sign-in-modal-footer {
+    border-top: 1px solid rgba(22, 24, 35, 0.12);
+    height: 64px;
+    line-height: 64px;
+    text-align: center;
+    font-size: 15px;
+
+    a {
+        margin-left: 5px;
+        font-weight: 600;
+        font-size: 15px;
+        line-height: 18px;
+        color: rgb(254, 44, 85);
+    }
+}

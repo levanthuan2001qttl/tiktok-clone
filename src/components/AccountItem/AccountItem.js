@@ -6,12 +6,13 @@ import classNames from 'classnames/bind';
 import Image from '../Image/Image';
 import styles from './AccountItem.module.scss';
 import { Link } from 'react-router-dom';
+import { memo } from 'react';
 
 const cx = classNames.bind(styles);
 
-function AccountItem({ data }) {
+function AccountItem({ data, onHideSearchResult }) {
     return (
-        <Link to={`/@${data.nickname}`} className={cx('wrapper')}>
+        <Link to={`/@${data.nickname}/${data.id}`} className={cx('wrapper')} onClick={onHideSearchResult}>
             <Image className={cx('avatar')} src={data.avatar} alt={data.full_name} />
             <div className={cx('info')}>
                 <p className={cx('name')}>
@@ -28,4 +29,4 @@ AccountItem.propTypes = {
     data: PropTypes.object.isRequired,
 };
 
-export default AccountItem;
+export default memo(AccountItem);

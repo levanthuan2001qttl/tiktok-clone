@@ -15,6 +15,7 @@ import {
 import CommentsList from '../CommentsList/CommentsList';
 import { commentsService } from '~/services';
 import CommentItemSkeleton from '../../components/CommentItemSkeleton/CommentItemSkeleton';
+import { useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function Comment({ videoUid, videoId }) {
@@ -23,11 +24,14 @@ function Comment({ videoUid, videoId }) {
     const inputCommentRef = useRef();
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const commentsList = useSelector(commentsListSelector);
     const commentLoading = useSelector(videoStatusSelector);
 
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
     useEffect(() => {
-        dispatch(fetchComments(videoId));
+        if (currentUser) dispatch(fetchComments(videoId));
         setNewComments('');
     }, [videoId]);
 
@@ -44,12 +48,24 @@ function Comment({ videoUid, videoId }) {
         dispatch(detailVideoSlice.actions.inCreaseQuantityComments());
     };
 
+    const renderNeedLogin = () => {
+        return (
+            <div className="d-flex flex-column align-center justify-content-center">
+                <p style={{ marginBottom: '14px' }}>Bạn cần đăng nhập để bình luân</p>
+                <Button primary onClick={() => navigate('/sign-in')}>
+                    Đăng nhập
+                </Button>
+            </div>
+        );
+    };
+
     return (
         <Fragment>
             <div className={cx('comment-container')}>
                 {newComments && newComments.map((comment) => <CommentItem key={comment.id} data={comment} />)}
-                {commentsList.length > 0 && <CommentsList data={commentsList} />}
+                {commentsList?.length > 0 && <CommentsList data={commentsList} />}
                 {commentLoading === 'loading' && <CommentItemSkeleton card={2} />}
+                {!currentUser && renderNeedLogin()}
             </div>
             <div className={cx('comment-input')}>
                 <form className={cx('comment-input-form')} onSubmit={handleSubmitComment}>

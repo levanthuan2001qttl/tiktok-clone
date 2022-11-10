@@ -14,8 +14,6 @@ import {
 import SuggestAccount from '~/components/SuggestAccount';
 import { userService } from '~/services';
 import RequireLogin from './RequireLogin/RequireLogin';
-import { useSelector } from 'react-redux';
-import { getCurrentUserSelector } from '~/modules/authenticationSlice/authSelector';
 import GoToTop from '~/components/GoToTop/GoToTop';
 
 const cx = classNames.bind(styles);
@@ -24,20 +22,22 @@ const PER_PAGE = 5;
 
 function SideBar() {
     const [suggestedUsers, setSuggestedUsers] = useState([]);
-    // const [followingAccounts, setFollowingAccounts] = useState([]);
+    const [followingAccounts, setFollowingAccounts] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchApi = async () => {
             const dataSuggestedUsers = await userService.getSuggested({ page: 1, perPage: PER_PAGE });
             setSuggestedUsers(dataSuggestedUsers);
+
+            const dataFollowingAccounts = await userService.getFollowingAccount({ page: 1 });
+            setFollowingAccounts(dataFollowingAccounts);
             setLoading(false);
-            // const dataFollowingAccounts = await userService.getFollowingAccount({ page: 1 });
-            // console.log({ dataFollowingAccounts });
-            // setFollowingAccounts(dataFollowingAccounts);
         };
         fetchApi();
     }, []);
+
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     return (
         <aside className={cx('wrapper')}>
             <Menu>
@@ -55,11 +55,12 @@ function SideBar() {
                 />
                 <MenuItem title="Live" to={config.routes.live} icon={<LiveIcon />} activeIcon={<LiveActiveIcon />} />
             </Menu>
-            {/* {!getCurrentUser && <RequireLogin title="Đăng nhập để follow các tác giả, thích video và xem bình luận." />} */}
-            <SuggestAccount label="Suggested Accounts" data={suggestedUsers} loading={loading} />
+            {!currentUser && <RequireLogin title="Đăng nhập để follow các tác giả, thích video và xem bình luận." />}
+            <SuggestAccount label="Tài khoản được đề xuất" data={suggestedUsers} loading={loading} />
             <GoToTop />
-            {/* <SuggestAccount label="Suggested Accounts" data={suggestedUsers} /> */}
-            {/* <SuggestAccount label="Following Accounts" data={followingAccounts} /> */}
+            {currentUser && (
+                <SuggestAccount label="Các tài khoản đang follow" data={followingAccounts} loading={loading} />
+            )}
         </aside>
     );
 }

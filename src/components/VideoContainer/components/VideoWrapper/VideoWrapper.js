@@ -71,15 +71,10 @@ function Video({ data, index }) {
     const dispatch = useDispatch();
 
     const handleClickSeeDetailVideo = () => {
-        const token = JSON.parse(localStorage.getItem('token'));
-        if (token) {
-            navigate(`/@${data.user.nickname}/video/${data.uuid}/${data.id}`);
-            localStorage.setItem('videoIndex', index);
-            dispatch(detailVideoSlice.actions.selectedVideoIndex(index));
-            dispatch(detailVideoSlice.actions.saveVideo(data));
-        } else {
-            navigate('/sign-in');
-        }
+        navigate(`/@${data.user.nickname}/video/${data.uuid}/${data.id}`);
+        localStorage.setItem('videoIndex', index);
+        dispatch(detailVideoSlice.actions.selectedVideoIndex(index));
+        dispatch(detailVideoSlice.actions.saveVideo(data));
     };
 
     return (

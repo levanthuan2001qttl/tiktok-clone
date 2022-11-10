@@ -45,6 +45,10 @@ h6 {
     margin: 0;
 }
 
+a:hover {
+    color: var(--text-color);
+}
+
 //scrollbar
 html *::-webkit-scrollbar {
     border-radius: 0;

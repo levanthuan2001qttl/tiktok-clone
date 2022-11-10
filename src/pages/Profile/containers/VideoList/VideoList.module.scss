@@ -1,0 +1,51 @@
+.video-list-tab {
+    display: flex;
+    justify-content: stretch;
+    width: 460px;
+    margin-bottom: 8px;
+    position: relative;
+
+    &::after {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        content: '';
+        width: 100%;
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.12);
+        transform: scaleY(50%);
+    }
+}
+
+.videos-tab {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 25px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 0%;
+    height: 44px;
+    cursor: pointer;
+    text-align: center;
+    color: rgba(22, 24, 35, 1);
+}
+
+.bottom-lines {
+    position: absolute;
+    width: 50%;
+    height: 2px;
+    background: var(--primary);
+    left: 0;
+    bottom: 0;
+    transition: transform 0.3s;
+}
+
+.bottom-lines.is-likes {
+    transform: translateX(230px);
+}
+
+.bottom-lines.is-videos {
+    transform: translateX(0);
+}

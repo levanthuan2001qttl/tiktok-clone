@@ -2,6 +2,19 @@ import * as httpRequest from '~/utils/httpRequest';
 
 const token = JSON.parse(localStorage.getItem('token'));
 
+export const getUserProfile = async (nickname) => {
+    try {
+        const response = await httpRequest.get(`users/@${nickname}`, {
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const createVideo = async (formData) => {
     try {
         const response = await httpRequest.post('/videos', formData, {
@@ -28,12 +41,25 @@ export const getAVideo = async (uid) => {
     }
 };
 
-export const getVideoListForYou = async (page = 1, type = 'for-you') => {
+export const getUserVideos = async (userId) => {
+    try {
+        const response = await httpRequest.get(`/users/${userId}/videos`, {
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getVideoListForYou = async (data) => {
     try {
         const response = await httpRequest.get('/videos', {
             params: {
-                type,
-                page,
+                type: data.type,
+                page: data.page,
             },
             headers: {
                 Authorization: 'Bearer ' + token,

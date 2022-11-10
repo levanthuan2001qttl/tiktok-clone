@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchGetVideoListForYou } from '~/modules/homeSlice/homeSlice';
 import { getVideoListForYouSelector } from '~/modules/homeSlice/homeSelector';
 import { fetchGetCurrentUser } from '~/modules/authenticationSlice/authenticationSlice';
-import GoToTop from '~/components/GoToTop/GoToTop';
+import loadingGif from '~/assets/gifs/loading.gif';
 
 const cx = classNames.bind(styles);
 const FETCH_TYPE_VIDEOS = 'for-you';
@@ -23,13 +23,11 @@ function Home() {
 
     const dispatch = useDispatch();
 
-    // console.log('set Video');
-
     const videosListForYou = useSelector(getVideoListForYouSelector);
 
     useEffect(() => {
-        dispatch(fetchGetVideoListForYou(pagination.page));
-    }, [pagination.page, dispatch]);
+        dispatch(fetchGetVideoListForYou({ page: pagination.page, type: FETCH_TYPE_VIDEOS }));
+    }, [dispatch, pagination.page]);
 
     const token = JSON.parse(localStorage.getItem('token'));
     useEffect(() => {
@@ -49,8 +47,9 @@ function Home() {
                         ...pagination,
                         page: pagination.page + 1,
                     }));
+                    setIsHasMore(true);
                 }}
-                loader={<p>Loading...</p>}
+                loader={<img src={loadingGif} alt="" style={{ width: '150px', objectFit: 'cover' }} />}
                 hasMore={isHasMore}
             >
                 {videosListForYou.length > 0 ? (

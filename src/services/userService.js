@@ -7,6 +7,11 @@ export const signIn = async (body) => {
     return response;
 };
 
+export const signUp = async (body) => {
+    const response = await httpRequest.post('/auth/register', body);
+    return response;
+};
+
 export const signOut = async (body) => {
     const response = await httpRequest.post(
         '/auth/logout',
@@ -25,6 +30,23 @@ export const getCurrentUser = async (token) => {
         const response = await httpRequest.get('/auth/me', {
             headers: {
                 Authorization: 'Bearer ' + token,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+};
+
+export const editProfile = async (formData) => {
+    try {
+        const response = await httpRequest.post('/auth/me', formData, {
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+            params: {
+                _method: 'PATCH',
             },
         });
         return response.data;
@@ -53,6 +75,9 @@ export const getFollowingAccount = async ({ page }) => {
         const response = await httpRequest.get('/me/followings', {
             params: {
                 page,
+            },
+            headers: {
+                Authorization: 'Bearer ' + token,
             },
         });
         return response.data;

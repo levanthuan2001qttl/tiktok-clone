@@ -1,0 +1,85 @@
+.profile-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-info-desc {
+    display: flex;
+}
+
+.profile-avatar {
+    img {
+        color: #fff;
+        border-radius: 50%;
+        border-color: rgba(22, 24, 35, 0.12);
+        border-width: 0.5px;
+        cursor: pointer;
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+    }
+}
+
+.profile-info-description {
+    margin-left: 30px;
+}
+
+.user-title {
+    font-family: 'IBM Plex Sans', SofiaPro, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 38px;
+    padding-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+
+.user-subtitle {
+    font-family: 'IBM Plex Sans', ProximaNova, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 25px;
+    text-overflow: ellipsis;
+    height: 25px;
+    overflow: hidden;
+    max-width: 450px;
+    white-space: nowrap;
+}
+
+.user-count-info {
+    display: flex;
+
+    align-items: center;
+    margin-top: 22px;
+    color: rgba(18, 18, 18, 0.75);
+}
+
+.user-count-div {
+    color: rgba(22, 24, 35, 1);
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 25px;
+    display: flex;
+    direction: ltr;
+    align-items: baseline;
+    margin-right: 30px;
+}
+
+.user-count-title {
+    color: rgba(22, 24, 35, 0.75);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    display: inline-block;
+    margin-left: 6px;
+}
+
+.user-share-desc {
+    text-align: left;
+    color: rgba(22, 24, 35, 1);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    margin-top: 10px;
+}

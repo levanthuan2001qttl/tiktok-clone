@@ -9,6 +9,7 @@ import AccountPreview from './AccountPreview';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import Image from '../Image';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -24,11 +25,11 @@ function AccountItem({ data }) {
             </div>
         );
     };
-
+    const navigate = useNavigate();
     return (
         <div>
             <Tippy delay={[800, 0]} offset={[-20, 0]} interactive placement="bottom" render={renderPreview}>
-                <div className={cx('account-item')}>
+                <div className={cx('account-item')} onClick={() => navigate(`/@${data.nickname}/${data.id}`)}>
                     <Image className={cx('avatar')} src={data.avatar} alt={data.nickname} />
                     <div className={cx('item-info')}>
                         <p className={cx('nick-name')}>

@@ -60,6 +60,7 @@ function Menu({ children, items = [], onChange, hideOnClick = false }) {
             hideOnClick={hideOnClick}
             render={renderResult}
             onHide={handleResetToFirstPage}
+            // visible
         >
             {children}
         </Tippy>
