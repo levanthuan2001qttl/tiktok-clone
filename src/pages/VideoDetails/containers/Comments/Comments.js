@@ -7,11 +7,7 @@ import CommentItem from '../../components/CommentItem';
 import { useDispatch, useSelector } from 'react-redux';
 import detailVideoSlice, { fetchComments } from '~/modules/detailVideoSlice/detailVideoSlice';
 import { memo } from 'react';
-import {
-    commentsListSelector,
-    getAVideoSelector,
-    videoStatusSelector,
-} from '~/modules/detailVideoSlice/detailVideoSelector';
+import { commentsListSelector, videoStatusSelector } from '~/modules/detailVideoSlice/detailVideoSelector';
 import CommentsList from '../CommentsList/CommentsList';
 import { commentsService } from '~/services';
 import CommentItemSkeleton from '../../components/CommentItemSkeleton/CommentItemSkeleton';

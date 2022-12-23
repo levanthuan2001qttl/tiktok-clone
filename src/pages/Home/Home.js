@@ -17,7 +17,7 @@ const TOTAL_VIDEOS = 15;
 
 function Home() {
     const [pagination, setPagination] = useState({
-        page: 1,
+        page: 10,
     });
     const [isHasMore, setIsHasMore] = useState(true);
 

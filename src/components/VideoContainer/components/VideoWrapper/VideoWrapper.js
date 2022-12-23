@@ -6,7 +6,7 @@ import { Slider } from 'antd';
 import { VolumeIcon, VolumeMutedIcon } from '~/components/Icons';
 import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { secondToMinute } from '~/helps/secondToMinute';
+import { secondToMinute } from '~/helps';
 import { useNavigate } from 'react-router-dom';
 import detailVideoSlice from '~/modules/detailVideoSlice/detailVideoSlice';
 import { useDispatch, useSelector } from 'react-redux';

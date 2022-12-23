@@ -27,6 +27,7 @@ function EditProfile({ data, onRequestClose, onSaveProfile }) {
         event.preventDefault();
         var file = event?.target?.files?.item(0);
         file.preview = URL.createObjectURL(file);
+
         setAvatarFile(file);
     };
 
@@ -59,14 +60,13 @@ function EditProfile({ data, onRequestClose, onSaveProfile }) {
             onSaveProfile(response);
         }
     };
-
     return (
         <form className={cx('update-profile')} onSubmit={handleSubmit}>
             <div className={cx('profile-heading')}>Edit Profile</div>
             <div className={cx('edit-avatar')}>
                 <span className={cx('edit-avatar-title')}>Ảnh hồ sơ</span>
                 <div className={cx('edit-avatar-user')}>
-                    <Image src={avatarFile?.preview || data.avatar} alt={data.nickname} />
+                    <Image src={avatarFile ? avatarFile.preview : data.avatar} alt={data.nickname} />
                     <div className={cx('edit-icon')} onClick={onEditBackgroundButtonClick}>
                         <EditProfileIcon />
                         <input

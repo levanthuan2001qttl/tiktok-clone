@@ -62,7 +62,7 @@ function VideoList({ data }) {
                 <StatusVideo
                     icon={<LockIcon />}
                     title=" Video đã thích của người dùng này ở trạng thái riêng tư"
-                    subtitle={` Các video được thích bởi ${data[0]?.nickname} hiện đang ẩn`}
+                    subtitle={` Các video được thích hiện đang ẩn`}
                 />
             )}
         </div>

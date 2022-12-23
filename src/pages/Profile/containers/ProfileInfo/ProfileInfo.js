@@ -1,5 +1,7 @@
 import classNames from 'classnames/bind';
-import { useMemo, useState } from 'react';
+import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '~/components/Button';
 import { EditProfileIcon } from '~/components/Icons';
@@ -18,10 +20,17 @@ function ProfileInfo({ data }) {
     const [isOpen, setIsOpen] = useState(false);
     const getCurrentUser = useSelector(getCurrentUserSelector);
 
+    // console.log({ data });
+    // console.log({ dataProfile });
+
     const totalLikes = useMemo(() => {
         return data.videos.reduce((acc, item) => {
             return acc + item.user.likes_count;
         }, 0);
+    }, [data]);
+
+    useLayoutEffect(() => {
+        setDataProfile(data);
     }, [data]);
 
     const dispatch = useDispatch();
@@ -101,4 +110,4 @@ function ProfileInfo({ data }) {
     );
 }
 
-export default ProfileInfo;
+export default memo(ProfileInfo);

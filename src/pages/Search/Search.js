@@ -51,10 +51,20 @@ function Search() {
 
             {isLinesBottomAccountUser ? (
                 !loading && searchResult.length > 0 ? (
-                    searchResult
-                        .slice()
-                        .sort((pre, next) => next.followings_count - pre.followings_count)
-                        .map((data, index) => <UserItem key={index} item={data} />)
+                    <Fragment>
+                        {searchResult
+                            .slice()
+                            .sort((pre, next) => next.followings_count - pre.followings_count)
+                            .map((data, index) => (
+                                <UserItem key={index} item={data} />
+                            ))}
+                        <div className={cx('search-see-all')}>
+                            <button type="button" className={cx('search-see-all-btn')}>
+                                Tải thêm
+                                <SeeAllIcon className={cx('search-see-all-icon')} />
+                            </button>
+                        </div>
+                    </Fragment>
                 ) : (
                     <StatusVideo
                         icon={<UserAvatarIcon />}
@@ -71,12 +81,6 @@ function Search() {
                     />
                 </>
             )}
-            <div className={cx('search-see-all')}>
-                <button type="button" className={cx('search-see-all-btn')}>
-                    Tải thêm
-                    <SeeAllIcon className={cx('search-see-all-icon')} />
-                </button>
-            </div>
         </Fragment>
     );
 }

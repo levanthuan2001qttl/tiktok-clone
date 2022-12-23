@@ -25,6 +25,7 @@ import {
 } from '~/modules/detailVideoSlice/detailVideoSlice';
 import { getCurrentUserSelector } from '~/modules/authenticationSlice/authSelector';
 import Image from '~/components/Image';
+import { compareToDate } from '~/helps';
 const cx = classNames.bind(styles);
 
 function VideoInformation({ data }) {
@@ -76,7 +77,7 @@ function VideoInformation({ data }) {
                             {data.user.tick && <FontAwesomeIcon icon={faCheckCircle} className={cx('check')} />}
                         </span>
                         <p>
-                            {data.user.last_name} . {data.created_at.slice(5, 10)}
+                            {data.user.last_name} . {compareToDate(data.created_at)}
                         </p>
                     </Link>
                 </div>

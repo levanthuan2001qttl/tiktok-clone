@@ -8,6 +8,7 @@ import { PrivateRoute, PublicRoute } from '~/routes/config';
 
 function App() {
     //hello
+    console.log(process.env.port);
     return (
         <div className="App">
             <ToastContainer

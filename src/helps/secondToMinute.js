@@ -1,4 +1,4 @@
-export const secondToMinute = (d) => {
+const secondToMinute = (d) => {
     d = Number(d);
     // let h = Math.floor(d / 3600);
     let m = Math.floor((d % 3600) / 60);
@@ -9,3 +9,5 @@ export const secondToMinute = (d) => {
     let sDisplay = s < 10 ? `0${s}` : s;
     return `${mDisplay}:${sDisplay}`;
 };
+
+export default secondToMinute;

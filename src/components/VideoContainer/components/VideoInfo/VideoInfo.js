@@ -7,6 +7,7 @@ import { faMusic, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react/headless';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import AccountPreview from '~/components/SuggestAccount/AccountPreview';
+import { compareToDate } from '~/helps';
 
 const cx = classNames.bind(styles);
 
@@ -33,7 +34,7 @@ function VideoInfo({ data }) {
                         <h3 className={cx('video-container-nickname')}>{data.user.nickname}</h3>
                         {data.user.tick && <FontAwesomeIcon icon={faCheckCircle} className={cx('check')} />}
                         <h4 className={cx('video-container-bio')}>{data.user.last_name}. </h4>
-                        <h3 className={cx('video-container-created_at')}>{data.created_at.slice(5, 10)}</h3>
+                        <h3 className={cx('video-container-created_at')}>{compareToDate(data.created_at)}</h3>
                     </Link>
                 </Tippy>
             </div>
